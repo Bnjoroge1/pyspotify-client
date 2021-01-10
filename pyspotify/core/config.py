@@ -2,17 +2,15 @@ import os, yaml
 from collections import namedtuple
 from ..auth  import AuthMode
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-load_dotenv(os.path.join(basedir, '.env'))
 
-Config = namedtuple('Config', ['SPOTIFY_SECRET_KEY',
- 'SPOTIFY_CLIENT_ID',
+Config = namedtuple('Config', ['client_id',
+ 'client_secret',
  'access_token_url',
  'AUTH_URL',
  'api_version',
  'api_url',
  'base_url',
- 'auth_method', ])
+ 'auth_mode', ])
 
 def read_config_file():
      current_dir = os.path.abspath(os.curdir)
@@ -24,7 +22,7 @@ def read_config_file():
      """     
      try:
           with open(file_path, 'r', encoding='UTF-8') as yaml_file:
-               config_file = yaml.load(yaml_file)
+               config_file = yaml.load(yaml_file, Loader=yaml.FullLoader)
                config_file['base_url'] = f'{config_file["api_url"]}/{config_file["api_version"]}'
                auth_mode = config_file['auth_mode']
                config_file['auth_mode'] = AuthMode.__members__.get(auth_mode)
