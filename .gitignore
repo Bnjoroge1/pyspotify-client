@@ -6,8 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-#env ffiles
-config.yaml
 
 # Distribution / packaging
 .Python
@@ -141,3 +139,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+#YAML FIles
+config.yaml
