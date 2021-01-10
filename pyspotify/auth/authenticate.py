@@ -1,3 +1,4 @@
+from pyspotify.core.config import read_config_file
 from pyspotify.auth.auth_config import AuthMode
 from pyspotify.core.exceptions import BadRequestError
 
@@ -41,6 +42,35 @@ def _get_auth_code(conf):
           raise IOError(
      'Please authorise the application. The .pyspotify file was not found')
 
+def _authorization_code_request(auth_code):
+     config = read_config_file()
+     auth_key = _get_access_token(config.client_id, config.client_secret)
+     headers = {'Authorization': f'Basic {auth_key}', }
+     options = {
+     'code': auth_code,
+     'redirect_uri': 'http://localhost:3000/callback',
+     'grant_type': 'authorization_code',
+     'json': True
+ }
+     response = requests.post(
+     config.access_token_url,
+     headers=headers,
+     data=options
+ )
+ 
+     content = json.loads(response.content.decode('utf-8'))
+     if response.status_code == 400:
+          error_description = content.get('error_description', '')
+          raise BadRequestError(error_description)
+
+     access_token = content.get('access_token', None)
+     token_type = content.get('token_type', None)
+     expires_in = content.get('expires_in', None)
+     scope = content.get('scope', None)
+     refresh_token = content.get('refresh_token', None)
+     
+     return Authorization(access_token, token_type, expires_in,
+          scope, refresh_token)
 
 def _authentication_request(conf):
      """FUnction that makes authentication request for client credentials.
