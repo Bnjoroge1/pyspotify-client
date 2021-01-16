@@ -22,7 +22,7 @@ def read_config_file():
      """     
      try:
           with open(file_path, 'r', encoding='UTF-8') as yaml_file:
-               config_file = yaml.load(yaml_file, Loader=yaml.FullLoader)
+               config_file = yaml.safe_load(yaml_file)
                config_file['base_url'] = f'{config_file["api_url"]}/{config_file["api_version"]}'
                auth_mode = config_file['auth_mode']
                config_file['auth_mode'] = AuthMode.__members__.get(auth_mode)
