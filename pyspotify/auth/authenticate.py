@@ -59,7 +59,7 @@ def _authorization_code_request(auth_code):
  )
  
      content = json.loads(response.content.decode('utf-8'))
-     if response.status_code == 400:
+     if response.status_code != 200:
           error_description = content.get('error_description', '')
           raise BadRequestError(error_description)
 
