@@ -47,8 +47,8 @@ def _authorization_code_request(auth_code):
      auth_key = _get_access_token(config.client_id, config.client_secret)
      headers = {'Authorization': f'Basic {auth_key}', }
      options = {
-     'code': auth_code,
-     'redirect_uri': 'http://localhost:3000/callback',
+     'code': f'{auth_code}',
+     'redirect_uri': 'http://localhost:5000/callback',
      'grant_type': 'authorization_code',
      'json': True
  }

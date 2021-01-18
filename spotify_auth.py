@@ -1,3 +1,4 @@
+from os import error
 from pyspotify.auth.authenticate import _refresh_access_token
 from pyspotify.auth.auth_config import AuthMode
 from urllib.parse import urlencode
@@ -15,8 +16,8 @@ config = read_config_file()
 @app.route('/')
 def home():     
      params = {
-          'client_id ' : config.client_id,
           'response_type' : 'code',
+          'client_id' : config.client_id,
           'redirect_uri' : 'http://localhost:5000/callback',
           'scope' : 'user-read-private playlist-modify-private user-read-recently-played user-top-read user-library-modify user-library-read',
      }
@@ -30,10 +31,14 @@ def callback():
      code = request.args.get('code', '')
      response = _authorization_code_request(code)
 
-     with open('.pyspotify', mode='w', encoding='utf-8') as auth_code_file:
-          auth_code_file.write(response.refresh_token)
-     
-     return 'ALl set. Please close the window'
+     try:
+          with open('.pyspotify', mode='w', encoding='utf-8') as auth_code_file:
+               auth_code_file.write(response.refresh_token) 
+     except error as err:
+          raise BadRequestError(err)
+
+     finally:
+          return f'All set. Please close the window.'
 
 
      
