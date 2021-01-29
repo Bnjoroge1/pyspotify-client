@@ -6,14 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
-
 # Distribution / packaging
 .Python
 build/
 develop-eggs/
 dist/
-app
-.vscode
 downloads/
 eggs/
 .eggs/
@@ -111,6 +108,7 @@ celerybeat.pid
 .env
 .venv
 env/
+config.yaml
 venv/
 ENV/
 env.bak/
@@ -139,6 +137,3 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-
-#YAML FIles
-config.yaml
