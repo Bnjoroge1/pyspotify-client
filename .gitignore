@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#YAML FIles
+config.yaml
+
 # C extensions
 *.so
 
@@ -134,6 +137,7 @@ dmypy.json
 
 # pytype static type analyzer
 .pytype/
+
 
 # Cython debug symbols
 cython_debug/

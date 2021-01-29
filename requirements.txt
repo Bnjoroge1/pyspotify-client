@@ -2,3 +2,4 @@ requests==2.18.4
 PyYAML==3.12
 
 Flask==1.1.2
+pytest==6.2.1
