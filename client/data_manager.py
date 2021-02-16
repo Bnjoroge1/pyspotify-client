@@ -12,7 +12,7 @@ class DataManager():
 
      def search_artist(self, criteria):
           results = Search().search_artist(criteria, self._auth)
-          items =  results.['artists']['items']
+          items =  results['artists']['items']
 
           if not items:
                raise EmptyResultsError(f'COuld not find the artist : {criteria}')
@@ -28,7 +28,7 @@ class DataManager():
           seconds = int((time / 1000) % 60)
           track_name = item['name']
           return f'{track_name} - [{minutes}:{seconds}]'
-          
+
      def get_artist_albums(self, artist_id, max_items=20):
           albums = Search().get_artists_albums(artist_id, self._auth)['items']
           if not albums:

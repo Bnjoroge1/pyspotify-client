@@ -1,7 +1,7 @@
 import requests
 import json
 from urllib.parse import urlencode
-from .request_type import SearchType
+from .request_type import RequestType
 from . import read_config_file
 from .api_request import execute_request
 from .parameters import prepare_params
@@ -50,7 +50,7 @@ class Search:
                'postfix': 'tracks',
           }
           return execute_request(url_template, auth, url_params)
-          
+
      def get_album_tracks(album_id, auth, params=None):
           if album_id is None or album_id is '':
                raise AttributeError('Parameter `album_id` cannot be `None`  or empty.')

@@ -11,17 +11,17 @@ def validate_params(params, required=None):
           msg = f'The parameter(s)`{",".join(not_supplied)}` are required'
           raise AttributeError(msg)
 
-     def prepare_params(params, required=None):
-          if params is None and required is not None:
-               msg = f'The parameter(s) `{", ".join(required)}` are required'
-               raise ValueError(msg)
+def prepare_params(params, required=None):
+     if params is None and required is not None:
+          msg = f'The parameter(s) `{", ".join(required)}` are required'
+          raise ValueError(msg)
 
-          elif params is None and required is None:
-               return ''
-          else:
-               validate_params(params, required)
-               query = urlencode(
-               '&'.join([f'{key}={value}' for key, value in
-               params.items()])
-               )
-          return f'?{query}'
+     elif params is None and required is None:
+          return ''
+     else:
+          validate_params(params, required)
+          query = urlencode(
+          '&'.join([f'{key}={value}' for key, value in
+          params.items()])
+          )
+     return f'?{query}'
