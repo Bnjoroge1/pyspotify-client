@@ -1,6 +1,6 @@
-from pyspotify.core.config import read_config_file
+#from core import read_config_file
 from pyspotify.auth.auth_config import AuthMode
-from pyspotify.core.exceptions import BadRequestError
+from pyspotify.exceptions import BadRequestError
 
 import base64
 import json
