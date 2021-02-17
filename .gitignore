@@ -3,11 +3,15 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-#YAML FIles
-config.yaml
-
 # C extensions
 *.so
+
+#config files
+config.yaml
+
+#vscode 
+.vscode/
+
 
 # Distribution / packaging
 .Python
@@ -111,7 +115,7 @@ celerybeat.pid
 .env
 .venv
 env/
-config.yaml
+app/
 venv/
 ENV/
 env.bak/
@@ -137,7 +141,6 @@ dmypy.json
 
 # pytype static type analyzer
 .pytype/
-
 
 # Cython debug symbols
 cython_debug/
