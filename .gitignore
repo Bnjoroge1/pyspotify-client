@@ -3,11 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-#YAML FIles
-config.yaml
-
 # C extensions
 *.so
+#config
+config.yaml
 
 # Distribution / packaging
 .Python
@@ -28,6 +27,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+.vscode/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -111,7 +111,7 @@ celerybeat.pid
 .env
 .venv
 env/
-config.yaml
+app/
 venv/
 ENV/
 env.bak/
@@ -137,7 +137,6 @@ dmypy.json
 
 # pytype static type analyzer
 .pytype/
-
 
 # Cython debug symbols
 cython_debug/
