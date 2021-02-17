@@ -2,7 +2,7 @@ import requests
 import json
 from urllib.parse import urlencode
 from .request_type import RequestType
-from . import read_config_file
+from .config import read_config_file
 from .api_request import execute_request
 from .parameters import prepare_params
 

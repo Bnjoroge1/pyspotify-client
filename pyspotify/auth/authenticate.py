@@ -1,4 +1,4 @@
-#from core import read_config_file
+from pyspotify.core.confivg import read_config_file
 from pyspotify.auth.auth_config import AuthMode
 from pyspotify.exceptions import BadRequestError
 
