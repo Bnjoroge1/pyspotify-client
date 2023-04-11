@@ -5,13 +5,15 @@ from .request_type import RequestType
 from .config import read_config_file
 from .api_request import execute_request
 from .parameters import prepare_params
+from .search_parameters import SearchType
+
 
 
 class Search:
      def __init__(self, criteria, auth, search_type) -> None:
           self.criteria = criteria
           self.auth = auth
-          self.search_type = search_type
+          self.search_type = SearchType
               
      def _search(self,criteria, auth, search_type):
           conf = read_config_file()

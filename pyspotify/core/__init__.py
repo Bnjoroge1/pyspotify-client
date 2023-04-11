@@ -3,3 +3,4 @@ from pyspotify.exceptions import BadRequestError
 
 from .search import Search
 from .request_type import RequestType
+from .search_parameters import SearchType

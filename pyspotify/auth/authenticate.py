@@ -1,7 +1,6 @@
-from pyspotify.core.confivg import read_config_file
-from pyspotify.auth.auth_config import AuthMode
-from pyspotify.exceptions import BadRequestError
-
+import pyspotify.core as core
+from .auth_config import AuthMode
+from ..exceptions import BadRequestError
 import base64
 import json
 import os
@@ -32,25 +31,22 @@ def _get_auth_code(conf):
 
      auth_key = _get_access_token(conf.client_id, conf.client_secret)
 
-     try:
-          with open(file_path, mode='r', encoding = 'UTF-8') as file:
-               refresh_token = file.readline()
-               if refresh_token:
-                    return _refresh_access_token(auth_key,refresh_token)
-
-     except IOError as io_err:
-          raise IOError(
-     'Please authorise the application. The .pyspotify file was not found')
+     
 
 def _authorization_code_request(auth_code):
-     config = read_config_file()
+     config = core.read_config_file()
      auth_key = _get_access_token(config.client_id, config.client_secret)
-     headers = {'Authorization': f'Basic {auth_key}', }
+     response_type = 'code'
+     headers = {'Authorization': f'Basic {auth_key}',
+                'Content-Type': 'application/x-www-form-urlencoded' }
      options = {
-     'code': f'{auth_code}',
+     'client_id': f'{config.client_id}',
+     'response_type': f'{response_type}',
+     #'code': f'{auth_code}',
      'redirect_uri': 'http://localhost:5000/callback',
-     'grant_type': 'authorization_code',
-     'json': True
+     'scope': 'user-read-private user-read-email user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-recently-played user-library-read user-library-modify user-top-read user-read-playback-position user-modify-playback-state streaming app-remote-control playlist-read-private playlist-modify-private playlist-read-collaborative playlist-modify-public',
+
+     #'grant_type': f'client_credentials&client_id={config.client_id}client_secret={config.client_secret}',
  }
      response = requests.post(
      config.access_token_url,
@@ -62,15 +58,16 @@ def _authorization_code_request(auth_code):
      if response.status_code != 200:
           error_description = content.get('error_description', '')
           raise BadRequestError(error_description)
-
-     access_token = content.get('access_token', None)
-     token_type = content.get('token_type', None)
-     expires_in = content.get('expires_in', None)
-     scope = content.get('scope', None)
-     refresh_token = content.get('refresh_token', None)
-     
-     return Authorization(access_token, token_type, expires_in,
-          scope, refresh_token)
+     #return code and state
+     code = content.get('code', None)
+     #access_token = content.get('access_token', None)
+     #token_type = content.get('token_type', None)
+     #expires_in = content.get('expires_in', None)
+     #scope = content.get('scope', None)
+     #refresh_token = content.get('refresh_token', None)
+     return code
+     #return Authorization(access_token, token_type, expires_in,
+          #scope, refresh_token)
 
 def _authentication_request(conf):
      """FUnction that makes authentication request for client credentials.
@@ -85,12 +82,14 @@ def _authentication_request(conf):
      Returns:
          [namedTuple]: [Authorization Object that contains the access_token, client, credentials etc. ]
      """     
+     auth_code = _get_auth_code(conf)
      auth_key = _get_access_token(conf.client_secret, conf.client_id)
-     headers = {'Authorization' : f'Basic {auth_key}'}
+     headers = f'Authorization : Basic {auth_key}, Content-Type : application/x-www-form-urlencoded'
 
      options = {
-          'grant_type' : 'client_credentials',
-          'json' : True,
+          'grant_type' : 'authorization_code',
+          'code' : f'{auth_code}',
+          'redirect_uri' : 'http://localhost:5000/callback',
      }
      try:
           response = requests.post(
@@ -110,14 +109,15 @@ def _authentication_request(conf):
      access_token = content.get('access_token', None)
      token_type = content.get('token_type', None)
      expires_in = content.get('expires_in', None)
+     refresh_token = content.get('refresh_token', None)
      scope = content.get('scope', None)
-     return Authorization(access_token, token_type, expires_in, scope, None)
+     return Authorization(access_token, token_type, expires_in, scope, refresh_token)
 
 def _refresh_access_token(auth_key, refresh_token):
-     headers = f'Authorization : Basic {auth_key}'
+     headers = f'Authorization : Basic {auth_key}, Content-Type : application/x-www-form-urlencoded'
      options = {
-          'refresh_token' : refresh_token,
           'grant_type' : 'refresh_token',
+          'refresh_token' : f'{refresh_token}',
      }
 
      response = requests.post('https://accounts.spotify.com/api/token',
@@ -134,11 +134,14 @@ def _refresh_access_token(auth_key, refresh_token):
      scope = content.get('token_type', None)
      expires_in = content.get('expires_in', None)
 
-     return Authorization(access_token,token_type,expires_in,scope, refresh_token)  
+     return Authorization(access_token,token_type,expires_in, scope)  
 
 def authenticate(conf):
      if conf.auth_mode == AuthMode.CLIENT_CREDENTIALS:
           return _authentication_request(conf)
+     elif conf.auth_mode == AuthMode.AUTHORIZATION_CREDENTIALS:
+          return _authorization_code_request(conf)
+     
      
      return _get_auth_code(conf)
 

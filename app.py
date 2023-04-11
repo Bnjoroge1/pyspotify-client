@@ -5,6 +5,8 @@ from curses.textpad import Textbox
 from curses.textpad import rectangle
 from client import Menu
 from client import DataManager
+#import auth
+
 
 
 
@@ -29,10 +31,11 @@ def main(stdscr):
      stdscr.keypad(True)
      _data_manager = DataManager()
      criteria = show_search_screen(stdscr)
+     
      height, width = stdscr.getmaxyx()
      albums_panel = Menu('List of albums for the selected artist',(height, width, 0, 0))
      tracks_panel = Menu('List of tracks for the selected album',(height, width, 0, 0))
-     artist = _data_manager.search_artist(criteria)
+     artist = _data_manager.search_artist(criteria, _data_manager._SearchType.ARTIST)
      albums = _data_manager.get_artist_albums(artist['id'])
      clear_screen(stdscr)
      albums_panel.items = albums

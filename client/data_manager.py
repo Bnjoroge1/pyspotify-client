@@ -3,19 +3,22 @@ from pyspotify.core import Search
 from  pyspotify.exceptions import EmptyResultsError
 from pyspotify.auth import authenticate
 from pyspotify.core import read_config_file
-
+from pyspotify.core.search_parameters import SearchType
 
 class DataManager():
      def __init__(self) -> None:
               self._config = read_config_file()
               self._auth = authenticate(self._config)
+              self._SearchType = SearchType
+              
+              
 
-     def search_artist(self, criteria):
-          results = Search().search_artist(criteria, self._auth)
+     def search_artist(self, criteria, search_type=SearchType.ARTIST):
+          results = Search().search_artist(criteria, self._auth, self._SearchType.ARTIST)
           items =  results['artists']['items']
 
           if not items:
-               raise EmptyResultsError(f'COuld not find the artist : {criteria}')
+               raise EmptyResultsError(f'Could not find the artist : {criteria}')
 
           return items[0]
 

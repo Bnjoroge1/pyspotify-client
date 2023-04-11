@@ -19,7 +19,7 @@ class Panel:
           self._panel.hide()
 
      def _set_title(self):
-          formatted_title = f' {self._title} '
+          formatted_title = f' {self.title} '
           self._win.addstr(0, 2, formatted_title, curses.A_REVERSE)
      
      def show(self):

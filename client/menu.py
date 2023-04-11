@@ -30,9 +30,10 @@ class MenuItem:
 
 class Menu(Panel):
      def __init__(self, title, dimensions, align=Alignment.LEFT,items = []):
-          super(title, dimensions)
+          super().__init__(title, dimensions)
           self._align = align
           self.items = items
+          
 
      def get_currently_selected(self):
           items = [x for x in self.items if x.selected]

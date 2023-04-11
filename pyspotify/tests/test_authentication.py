@@ -1,6 +1,5 @@
 import pytest
 import base64
-
 from pyspotify.core import read_config_file
 
 config = read_config_file()
